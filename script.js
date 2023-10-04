@@ -8,6 +8,19 @@ var stopCounter = 0
 var display = document.querySelector(".display")
 var reset = document.querySelector("#reset")
 var lapCounter = []
+var data = []
+
+try {
+    data = localStorage.getItem('data')
+    data = data.split(",")
+    lapCounter = data.slice()
+    data.forEach(element => {
+        display.innerHTML = `<div class="card">${element}</div>` + display.innerHTML
+    });
+}
+catch (e) {
+    console.log(e)
+}
 
 function increment() {
     if (stopCounter == 1) {
@@ -57,12 +70,16 @@ start.addEventListener('click', () => {
 
 
 lap.addEventListener('click', () => {
-    display.innerHTML = `<div class="card">${hour.innerHTML}:${min.innerHTML}:${sec.innerHTML}</div>` + display.innerHTML
-    lapCounter += 1
-    localStorage.setItem(`Lap ${lapCounter}`, `${hour.innerHTML}:${min.innerHTML}:${sec.innerHTML}`)
+    if (lapCounter == null || !(lapCounter.includes(`${hour.innerHTML}:${min.innerHTML}:${sec.innerHTML}`))) {
+        display.innerHTML = `<div class="card">${hour.innerHTML}:${min.innerHTML}:${sec.innerHTML}</div>` + display.innerHTML
+        lapCounter.push(`${hour.innerHTML}:${min.innerHTML}:${sec.innerHTML}`)
+        localStorage.setItem('data', lapCounter)
+    }
 })
 
 reset.addEventListener('click', () => {
+    localStorage.removeItem('data')
+    lapCounter = []
     reset.innerHTML = `<img src="assets/resetButton.png" alt="">`
     display.innerHTML = ""
     sec.innerHTML = "00"
