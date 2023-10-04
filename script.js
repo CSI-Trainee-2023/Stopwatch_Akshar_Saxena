@@ -2,17 +2,17 @@ var hour = document.querySelector("#hours")
 var min = document.querySelector("#min")
 var sec = document.querySelector("#sec")
 var start = document.querySelector("#str")
-var stop = document.querySelector("#stp")
 var lap = document.querySelector("#lap")
 var isTap = true
 var stopCounter = 0
 var display = document.querySelector(".display")
 var reset = document.querySelector("#reset")
+var lapCounter = []
 
 function increment() {
-    if(stopCounter == 1){
+    if (stopCounter == 1) {
         isTap = true
-        return 0
+        return null
     }
     if (parseInt(sec.innerHTML) == 59) {
         sec.innerHTML = "00"
@@ -44,24 +44,45 @@ function increment() {
 
 start.addEventListener('click', () => {
     if (isTap) {
+        start.innerHTML = `<img src="assets/pauseButton.png" alt="">`
         stopCounter = 0
-        increment()
         isTap = false
-       
+        increment()
+    }
+    else {
+        start.innerHTML = `<img src="assets/playButton.png" alt="">`
+        stopCounter = 1
     }
 })
 
-stop.addEventListener('click', () => {
-    stopCounter = 1
-})
 
-lap.addEventListener('click', ()=>{
+lap.addEventListener('click', () => {
     display.innerHTML = `<div class="card">${hour.innerHTML}:${min.innerHTML}:${sec.innerHTML}</div>` + display.innerHTML
+    lapCounter += 1
+    localStorage.setItem(`Lap ${lapCounter}`, `${hour.innerHTML}:${min.innerHTML}:${sec.innerHTML}`)
 })
 
-reset.addEventListener('click', ()=>{
+reset.addEventListener('click', () => {
+    reset.innerHTML = `<img src="assets/resetButton.png" alt="">`
     display.innerHTML = ""
     sec.innerHTML = "00"
     min.innerHTML = "00"
     hour.innerHTML = "00"
 })
+
+// key shortcuts
+// S/X - Start/Stop
+// R - Reset
+// L - Lap
+
+document.onkeyup = function (e) {
+    if (e.key == 's') {
+        start.click()
+    } else if (e.key == 'x') {
+        start.click()
+    } else if (e.key == 'r') {
+        reset.click()
+    } else if (e.key == 'l') {
+        lap.click()
+    }
+};
