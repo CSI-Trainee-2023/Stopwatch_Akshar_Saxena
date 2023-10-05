@@ -149,6 +149,10 @@ footer{
     font-weight: 400;
 }
 
+footer h5{
+    font-family: 'Courier New', Courier, monospace;
+}
+
 @media screen and (max-width: 959px){
     main{
         margin-top: 10rem;

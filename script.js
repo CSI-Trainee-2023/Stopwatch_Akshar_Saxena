@@ -1,7 +1,7 @@
 var hour = document.querySelector("#hours")
 var min = document.querySelector("#min")
 var sec = document.querySelector("#sec")
-var start = document.querySelector("#str")
+var startStop = document.querySelector("#str")
 var lap = document.querySelector("#lap")
 var isTap = true
 var stopCounter = 0
@@ -55,15 +55,15 @@ function increment() {
 }
 
 
-start.addEventListener('click', () => {
+startStop.addEventListener('click', () => {
     if (isTap) {
-        start.innerHTML = `<img src="assets/pauseButton.png" alt="">`
+        startStop.innerHTML = `<img src="assets/pauseButton.png" alt="">`
         stopCounter = 0
         isTap = false
         increment()
     }
     else {
-        start.innerHTML = `<img src="assets/playButton.png" alt="">`
+        startStop.innerHTML = `<img src="assets/playButton.png" alt="">`
         stopCounter = 1
     }
 })
@@ -94,9 +94,9 @@ reset.addEventListener('click', () => {
 
 document.onkeyup = function (e) {
     if (e.key == 's') {
-        start.click()
+        startStop.click()
     } else if (e.key == 'x') {
-        start.click()
+        startStop.click()
     } else if (e.key == 'r') {
         reset.click()
     } else if (e.key == 'l') {
