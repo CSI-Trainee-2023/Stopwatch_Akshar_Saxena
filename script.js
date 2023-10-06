@@ -1,6 +1,7 @@
 var hour = document.querySelector("#hours")
 var min = document.querySelector("#min")
 var sec = document.querySelector("#sec")
+var milli = document.querySelector("#milli")
 var startStop = document.querySelector("#str")
 var lap = document.querySelector("#lap")
 var isTap = true
@@ -9,6 +10,8 @@ var display = document.querySelector(".display")
 var reset = document.querySelector("#reset")
 var lapCounter = []
 var data = []
+
+// try/catch for retrieving the data from localStorage
 
 try {
     data = localStorage.getItem('data')
@@ -22,39 +25,30 @@ catch (e) {
     console.log(e)
 }
 
+// increment function for stopwatch
+
 function increment() {
-    if (stopCounter == 1) {
+    if (stopCounter == 1) { //checking for the condition of stop
         isTap = true
         return null
     }
-    if (parseInt(sec.innerHTML) == 59) {
-        sec.innerHTML = "00"
-        if (parseInt(min.innerHTML) == 59) {
-            min.innerHTML = "00"
-            if (parseInt(hour.innerHTML) < 9) {
-                hour.innerHTML = "0" + String(parseInt(hour.innerHTML) + 1)
+    milli.innerHTML = String(parseInt(milli.innerHTML) + 1).padStart(3, "0")
+    if (milli.innerHTML == "099") {
+        sec.innerHTML = String(parseInt(sec.innerHTML) + 1).padStart(2, "0")
+        if (sec.innerHTML == "60") {
+            sec.innerHTML = "00"
+            min.innerHTML = String(parseInt(min.innerHTML) + 1).padStart(2, "0")
+            if (min.innerHTML == "60") {
+                min.innerHTML = "00"
+                hour.innerHTML = String(parseInt(hour.innerHTML) + 1).padStart(2, "0")
             }
-            else {
-                hour.innerHTML = String(parseInt(hour.innerHTML) + 1)
-            }
         }
-        else if (parseInt(min.innerHTML) < 9) {
-            min.innerHTML = "0" + String(parseInt(min.innerHTML) + 1)
-        }
-        else {
-            min.innerHTML = String(parseInt(min.innerHTML) + 1)
-        }
+        milli.innerHTML = "000" // reseting the value of milliseconds
     }
-    else if (parseInt(sec.innerHTML) < 9) {
-        sec.innerHTML = "0" + String(parseInt(sec.innerHTML) + 1)
-    }
-    else {
-        sec.innerHTML = String(parseInt(sec.innerHTML) + 1)
-    }
-    setTimeout(increment, 1000);
+    setTimeout(increment, 10); // recalling function after every 10 milliseconds
 }
 
-
+// start/stop button 
 startStop.addEventListener('click', () => {
     if (isTap) {
         startStop.innerHTML = `<img src="assets/pauseButton.png" alt="">`
@@ -68,15 +62,16 @@ startStop.addEventListener('click', () => {
     }
 })
 
-
+//lap button
 lap.addEventListener('click', () => {
-    if (lapCounter == null || !(lapCounter.includes(`${hour.innerHTML}:${min.innerHTML}:${sec.innerHTML}`))) {
-        display.innerHTML = `<div class="card">${hour.innerHTML}:${min.innerHTML}:${sec.innerHTML}</div>` + display.innerHTML
-        lapCounter.push(`${hour.innerHTML}:${min.innerHTML}:${sec.innerHTML}`)
+    if (lapCounter == null || !(lapCounter.includes(`${hour.innerHTML}:${min.innerHTML}:${sec.innerHTML}:${milli.innerHTML}`))) {
+        display.innerHTML = `<div class="card">${hour.innerHTML}:${min.innerHTML}:${sec.innerHTML}:${milli.innerHTML}</div>` + display.innerHTML
+        lapCounter.push(`${hour.innerHTML}:${min.innerHTML}:${sec.innerHTML}:${milli.innerHTML}`)
         localStorage.setItem('data', lapCounter)
     }
 })
 
+//reset button
 reset.addEventListener('click', () => {
     localStorage.removeItem('data')
     lapCounter = []
@@ -85,13 +80,10 @@ reset.addEventListener('click', () => {
     sec.innerHTML = "00"
     min.innerHTML = "00"
     hour.innerHTML = "00"
+    milli.innerHTML = "000"
 })
 
-// key shortcuts
-// S/X - Start/Stop
-// R - Reset
-// L - Lap
-
+// adding keyboard shortcuts
 document.onkeyup = function (e) {
     if (e.key == 's') {
         startStop.click()

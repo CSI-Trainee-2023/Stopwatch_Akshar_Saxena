@@ -38,6 +38,11 @@ main{
 
 
 .watch{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
     width: 30rem;
     height: 30rem;
     border-radius: 50%;
@@ -56,13 +61,13 @@ main{
 }
 
 h2{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30rem;
-    height: 29rem;
     font-size: 5rem;
     color: white;
+}
+
+h3{
+    color: grey;
+    font-size: 3rem;
 }
 
 .lapCounter{
